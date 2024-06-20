@@ -1,24 +1,39 @@
-
 package Vista;
 
+import Modelo.CarritoItem;
+import Modelo.Articulo;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
+import javax.swing.table.DefaultTableModel;
 
 public class frmSistema extends javax.swing.JFrame {
 
+     private DefaultTableModel modeloTabla;
+    private List<CarritoItem> carrito;
 
     public frmSistema() {
         initComponents();
+        
     }
 
 
+  
+
+    // ... (resto de tu código)
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -51,9 +66,6 @@ public class frmSistema extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jpReserva = new javax.swing.JPanel();
-        pEquipamientos = new javax.swing.JPanel();
-        jLabel24 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
         pCampos = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -69,19 +81,13 @@ public class frmSistema extends javax.swing.JFrame {
         pDatos = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jbtnCancelarD = new javax.swing.JButton();
-        jbtnAceptarD = new javax.swing.JButton();
+        jbtnGuardar = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jtxtNombre = new javax.swing.JTextField();
         jLabel40 = new javax.swing.JLabel();
         jtxtCelular = new javax.swing.JTextField();
         jLabel41 = new javax.swing.JLabel();
         jLabel42 = new javax.swing.JLabel();
-        jLabel43 = new javax.swing.JLabel();
-        jcbxHInicio = new javax.swing.JComboBox<>();
-        jLabel44 = new javax.swing.JLabel();
-        jcbxNCampo1 = new javax.swing.JComboBox<>();
-        jcbxHFin = new javax.swing.JComboBox<>();
-        jLabel45 = new javax.swing.JLabel();
         jLabel46 = new javax.swing.JLabel();
         jcbxTDeporte = new javax.swing.JComboBox<>();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
@@ -98,6 +104,7 @@ public class frmSistema extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jComboBox7 = new javax.swing.JComboBox<>();
+        jToggleButton1 = new javax.swing.JToggleButton();
         jLabel28 = new javax.swing.JLabel();
         pCancha = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
@@ -116,50 +123,9 @@ public class frmSistema extends javax.swing.JFrame {
         jbtnCampo6 = new javax.swing.JButton();
         jbtnCampo1 = new javax.swing.JButton();
         jLabel29 = new javax.swing.JLabel();
-        pEquipamiento = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jbtnCancelarE = new javax.swing.JButton();
-        jbtnAceptarE = new javax.swing.JButton();
-        jLabel32 = new javax.swing.JLabel();
-        jLabel33 = new javax.swing.JLabel();
-        jLabel34 = new javax.swing.JLabel();
-        jLabel35 = new javax.swing.JLabel();
-        jLabel36 = new javax.swing.JLabel();
-        jLabel37 = new javax.swing.JLabel();
-        jLabel38 = new javax.swing.JLabel();
-        jLabel39 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jComboBox6 = new javax.swing.JComboBox<>();
-        jbtnAgregarLays4 = new javax.swing.JButton();
-        jButton47 = new javax.swing.JButton();
-        jbtnAgregarLays5 = new javax.swing.JButton();
-        jButton48 = new javax.swing.JButton();
-        jbtnAgregarLays6 = new javax.swing.JButton();
-        jButton49 = new javax.swing.JButton();
-        jbtnAgregarLays7 = new javax.swing.JButton();
-        jButton50 = new javax.swing.JButton();
-        jbtnAgregarLays8 = new javax.swing.JButton();
-        jbtnAgregarLays9 = new javax.swing.JButton();
-        jButton52 = new javax.swing.JButton();
-        jbtnAgregarLays10 = new javax.swing.JButton();
-        jLabel31 = new javax.swing.JLabel();
-        jButton51 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jtblCarrito = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jLabel47 = new javax.swing.JLabel();
-        jLabel48 = new javax.swing.JLabel();
-        jtxtTotalPagar = new javax.swing.JTextField();
-        jbtnReservarCarrito = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jLabel30 = new javax.swing.JLabel();
-        jpEventos = new javax.swing.JPanel();
         jpPagos = new javax.swing.JPanel();
         jpQuejas = new javax.swing.JPanel();
+        jpEventos = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -306,30 +272,6 @@ public class frmSistema extends javax.swing.JFrame {
         jpReserva.setBackground(new java.awt.Color(60, 71, 84));
         jpReserva.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        pEquipamientos.setBackground(new java.awt.Color(204, 204, 204));
-        pEquipamientos.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                pEquipamientosMouseMoved(evt);
-            }
-        });
-        pEquipamientos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pEquipamientosMouseClicked(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                pEquipamientosMouseExited(evt);
-            }
-        });
-        pEquipamientos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel24.setText("Equipamiento");
-        pEquipamientos.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 120, 30));
-        pEquipamientos.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 30, 30));
-
-        jpReserva.add(pEquipamientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 190, 70));
-
         pCampos.setBackground(new java.awt.Color(204, 204, 204));
         pCampos.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
@@ -431,21 +373,25 @@ public class frmSistema extends javax.swing.JFrame {
         });
         jPanel5.add(jbtnCancelarD, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 20, 140, 40));
 
-        jbtnAceptarD.setBackground(new java.awt.Color(255, 255, 255));
-        jbtnAceptarD.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jbtnAceptarD.setForeground(new java.awt.Color(0, 0, 0));
-        jbtnAceptarD.setText("Guardar");
-        jbtnAceptarD.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+        jbtnGuardar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jbtnGuardar.setForeground(new java.awt.Color(0, 0, 0));
+        jbtnGuardar.setText("Guardar");
+        jbtnGuardar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jbtnAceptarDMouseMoved(evt);
+                jbtnGuardarMouseMoved(evt);
             }
         });
-        jbtnAceptarD.addMouseListener(new java.awt.event.MouseAdapter() {
+        jbtnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jbtnAceptarDMouseExited(evt);
+                jbtnGuardarMouseExited(evt);
             }
         });
-        jPanel5.add(jbtnAceptarD, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 140, 40));
+        jbtnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnGuardarActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jbtnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 140, 40));
 
         pDatos.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(-180, 470, 1020, 80));
 
@@ -463,29 +409,11 @@ public class frmSistema extends javax.swing.JFrame {
         jLabel42.setText("Fecha");
         jPanel9.add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, -1));
 
-        jLabel43.setText("Hora inicio");
-        jPanel9.add(jLabel43, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, -1, -1));
-
-        jcbxHInicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<<Seleccione Hora>>", "08:00:00", "08:30:00", "09:00:00", "09:30:00", "10:00:00", "10:30:00", "11:00:00", "11:30:00", "12:00:00", "12:30:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00", "15:00:00", "15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00", "18:00:00", "18:30:00", "19:00:00", "19:30:00", "20:00:00", "20:30:00", "21:00:00", "21:30:00", "22:00:00", "22:30:00", "23:00:00", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }));
-        jPanel9.add(jcbxHInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 160, -1));
-
-        jLabel44.setText("N° campo");
-        jPanel9.add(jLabel44, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 340, -1, -1));
-
-        jcbxNCampo1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<<Seleccione >>", "01", "02", "03", "04", "05", "06" }));
-        jPanel9.add(jcbxNCampo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 360, 160, 20));
-
-        jcbxHFin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<<Seleccione Hora>>", "08:00:00", "08:30:00", "09:00:00", "09:30:00", "10:00:00", "10:30:00", "11:00:00", "11:30:00", "12:00:00", "12:30:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00", "15:00:00", "15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00", "18:00:00", "18:30:00", "19:00:00", "19:30:00", "20:00:00", "20:30:00", "21:00:00", "21:30:00", "22:00:00", "22:30:00", "23:00:00", "24:00:00" }));
-        jPanel9.add(jcbxHFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 300, 160, -1));
-
-        jLabel45.setText("Hora fin");
-        jPanel9.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, -1, -1));
-
         jLabel46.setText("Tipo de deporte");
-        jPanel9.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, -1, -1));
+        jPanel9.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, -1));
 
         jcbxTDeporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<<Seleccione >>", "Futbol", "Voley" }));
-        jPanel9.add(jcbxTDeporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 160, 20));
+        jPanel9.add(jcbxTDeporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 160, 20));
         jPanel9.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 160, -1));
 
         jLabel49.setText("Dni");
@@ -568,6 +496,9 @@ public class frmSistema extends javax.swing.JFrame {
         jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<<<<Seleccione>>>>", "01", "02", "03", "04", "05", "06" }));
         jComboBox7.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "N° Campo", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI Light", 1, 14))); // NOI18N
         pHorario.add(jComboBox7, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 210, 170, 60));
+
+        jToggleButton1.setText("Buscar");
+        pHorario.add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 280, 170, 40));
 
         jLabel28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/ddb18728a2772d3228ecaa8e83aa3c63.jpg"))); // NOI18N
         pHorario.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(-330, -40, 1170, 580));
@@ -702,277 +633,9 @@ public class frmSistema extends javax.swing.JFrame {
 
         jtbReserva.addTab("Campos", pCancha);
 
-        pEquipamiento.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel8.setBackground(new java.awt.Color(60, 71, 84));
-        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jbtnCancelarE.setBackground(new java.awt.Color(204, 204, 204));
-        jbtnCancelarE.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jbtnCancelarE.setForeground(new java.awt.Color(0, 0, 0));
-        jbtnCancelarE.setText("Cancelar");
-        jbtnCancelarE.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jbtnCancelarEMouseMoved(evt);
-            }
-        });
-        jbtnCancelarE.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jbtnCancelarEMouseExited(evt);
-            }
-        });
-        jPanel8.add(jbtnCancelarE, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 20, 140, 40));
-
-        jbtnAceptarE.setBackground(new java.awt.Color(204, 204, 204));
-        jbtnAceptarE.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jbtnAceptarE.setForeground(new java.awt.Color(0, 0, 0));
-        jbtnAceptarE.setText("Aceptar");
-        jbtnAceptarE.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jbtnAceptarEMouseMoved(evt);
-            }
-        });
-        jbtnAceptarE.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jbtnAceptarEMouseExited(evt);
-            }
-        });
-        jPanel8.add(jbtnAceptarE, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, 140, 40));
-
-        pEquipamiento.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(-180, 470, 1020, 80));
-
-        jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/soccer-boots.png"))); // NOI18N
-        pEquipamiento.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 80, 80));
-
-        jLabel33.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/soccer-boots.png"))); // NOI18N
-        pEquipamiento.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 80, 80));
-
-        jLabel34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/gloves (1).png"))); // NOI18N
-        pEquipamiento.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, 80, 60));
-
-        jLabel35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/soccer (2).png"))); // NOI18N
-        pEquipamiento.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 70, 80, 80));
-
-        jLabel36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/football-shirt (2).png"))); // NOI18N
-        pEquipamiento.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(63, 276, 60, 80));
-
-        jLabel37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/red-card.png"))); // NOI18N
-        pEquipamiento.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, 80, 80));
-
-        jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/football-long-socks-with-white-lines (1).png"))); // NOI18N
-        pEquipamiento.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 280, 80, 70));
-
-        jLabel39.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/football-long-socks-with-white-lines (1).png"))); // NOI18N
-        pEquipamiento.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 290, 80, 70));
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<<seleccione>>", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "++" }));
-        pEquipamiento.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 370, -1, -1));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<<seleccione>>", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "++" }));
-        pEquipamiento.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 160, -1, -1));
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<<seleccione>>", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "++" }));
-        pEquipamiento.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 160, -1, -1));
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<<seleccione>>", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "++" }));
-        pEquipamiento.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 160, -1, -1));
-
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<<seleccione>>", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "++" }));
-        pEquipamiento.add(jComboBox5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, -1, -1));
-
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<<seleccione>>", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "++" }));
-        pEquipamiento.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 370, -1, -1));
-
-        jbtnAgregarLays4.setBackground(new java.awt.Color(0, 0, 0));
-        jbtnAgregarLays4.setFont(new java.awt.Font("Mongolian Baiti", 0, 12)); // NOI18N
-        jbtnAgregarLays4.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnAgregarLays4.setText("Agregar al carrito");
-        jbtnAgregarLays4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnAgregarLays4ActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jbtnAgregarLays4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, 120, 20));
-
-        jButton47.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jButton47.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton47ActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jButton47, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 140, 170));
-
-        jbtnAgregarLays5.setBackground(new java.awt.Color(0, 0, 0));
-        jbtnAgregarLays5.setFont(new java.awt.Font("Mongolian Baiti", 0, 12)); // NOI18N
-        jbtnAgregarLays5.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnAgregarLays5.setText("Agregar al carrito");
-        jbtnAgregarLays5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnAgregarLays5ActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jbtnAgregarLays5, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 190, 120, 20));
-
-        jButton48.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jButton48.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton48ActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jButton48, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, 140, 170));
-
-        jbtnAgregarLays6.setBackground(new java.awt.Color(0, 0, 0));
-        jbtnAgregarLays6.setFont(new java.awt.Font("Mongolian Baiti", 0, 12)); // NOI18N
-        jbtnAgregarLays6.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnAgregarLays6.setText("Agregar al carrito");
-        jbtnAgregarLays6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnAgregarLays6ActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jbtnAgregarLays6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 120, 20));
-
-        jButton49.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jButton49.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton49ActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jButton49, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 140, 170));
-
-        jbtnAgregarLays7.setBackground(new java.awt.Color(0, 0, 0));
-        jbtnAgregarLays7.setFont(new java.awt.Font("Mongolian Baiti", 0, 12)); // NOI18N
-        jbtnAgregarLays7.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnAgregarLays7.setText("Agregar al carrito");
-        jbtnAgregarLays7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnAgregarLays7ActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jbtnAgregarLays7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 190, 120, 20));
-
-        jButton50.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jButton50.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton50ActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jButton50, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 140, 170));
-
-        jbtnAgregarLays8.setBackground(new java.awt.Color(0, 0, 0));
-        jbtnAgregarLays8.setFont(new java.awt.Font("Mongolian Baiti", 0, 12)); // NOI18N
-        jbtnAgregarLays8.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnAgregarLays8.setText("Agregar al carrito");
-        jbtnAgregarLays8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnAgregarLays8ActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jbtnAgregarLays8, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 180, 120, 20));
-
-        jbtnAgregarLays9.setBackground(new java.awt.Color(0, 0, 0));
-        jbtnAgregarLays9.setFont(new java.awt.Font("Mongolian Baiti", 0, 12)); // NOI18N
-        jbtnAgregarLays9.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnAgregarLays9.setText("Agregar al carrito");
-        jbtnAgregarLays9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnAgregarLays9ActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jbtnAgregarLays9, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 400, 120, 20));
-
-        jButton52.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jButton52.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton52ActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jButton52, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 260, 140, 170));
-
-        jbtnAgregarLays10.setBackground(new java.awt.Color(0, 0, 0));
-        jbtnAgregarLays10.setFont(new java.awt.Font("Mongolian Baiti", 0, 12)); // NOI18N
-        jbtnAgregarLays10.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnAgregarLays10.setText("Agregar al carrito");
-        jbtnAgregarLays10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnAgregarLays10ActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jbtnAgregarLays10, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 400, 120, 20));
-
-        jLabel31.setFont(new java.awt.Font("Segoe UI Light", 1, 18)); // NOI18N
-        jLabel31.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel31.setText("Tu Carrito");
-        pEquipamiento.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 95, 90, 40));
-
-        jButton51.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jButton51.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton51ActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jButton51, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 260, 140, 170));
-
-        jtblCarrito.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Articulo", "Cantidad", "Precio U.", "Precio T."
-            }
-        ));
-        jScrollPane1.setViewportView(jtblCarrito);
-
-        pEquipamiento.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 140, 270, 160));
-
-        jButton1.setBackground(new java.awt.Color(0, 0, 0));
-        jButton1.setFont(new java.awt.Font("Segoe UI Light", 1, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        pEquipamiento.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 90, 270, 130));
-
-        jLabel47.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel47.setText("Tu Total");
-        pEquipamiento.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 310, 60, -1));
-
-        jLabel48.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel48.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel48.setText("S/.");
-        pEquipamiento.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 310, 20, 20));
-
-        jtxtTotalPagar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtxtTotalPagarActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jtxtTotalPagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 310, 130, -1));
-
-        jbtnReservarCarrito.setBackground(new java.awt.Color(0, 0, 0));
-        jbtnReservarCarrito.setFont(new java.awt.Font("Segoe UI Light", 1, 14)); // NOI18N
-        jbtnReservarCarrito.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnReservarCarrito.setText("Reservar");
-        jbtnReservarCarrito.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnReservarCarritoActionPerformed(evt);
-            }
-        });
-        pEquipamiento.add(jbtnReservarCarrito, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 350, 230, -1));
-        pEquipamiento.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 260, 270, 130));
-
-        jLabel30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/ddb18728a2772d3228ecaa8e83aa3c63.jpg"))); // NOI18N
-        pEquipamiento.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(-330, -40, 1170, 590));
-
-        jtbReserva.addTab("Equipamiento", pEquipamiento);
-
         jpReserva.add(jtbReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, -40, 830, 580));
 
         jtbPaneles.addTab("Reservar", jpReserva);
-
-        jpEventos.setBackground(new java.awt.Color(153, 153, 255));
-        jpEventos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jtbPaneles.addTab("Eventos", jpEventos);
 
         jpPagos.setBackground(new java.awt.Color(153, 204, 255));
         jpPagos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -981,6 +644,10 @@ public class frmSistema extends javax.swing.JFrame {
         jpQuejas.setBackground(new java.awt.Color(255, 153, 153));
         jpQuejas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jtbPaneles.addTab("Quejas", jpQuejas);
+
+        jpEventos.setBackground(new java.awt.Color(153, 153, 255));
+        jpEventos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jtbPaneles.addTab("Eventos", jpEventos);
 
         getContentPane().add(jtbPaneles, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 1020, 570));
 
@@ -997,7 +664,7 @@ public class frmSistema extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnEventosMouseClicked
 
     private void jbtnPagosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnPagosMouseClicked
-      jtbPaneles.setSelectedIndex(3);
+        jtbPaneles.setSelectedIndex(3);
     }//GEN-LAST:event_jbtnPagosMouseClicked
 
     private void jbtnQuejasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnQuejasMouseClicked
@@ -1005,7 +672,7 @@ public class frmSistema extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnQuejasMouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-       jtbPaneles.setSelectedIndex(0);
+        jtbPaneles.setSelectedIndex(0);
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jbtnSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnSalirMouseClicked
@@ -1013,172 +680,88 @@ public class frmSistema extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnSalirMouseClicked
 
     private void pCamposMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pCamposMouseMoved
-      pCampos.setBackground(new Color(115,153,142));
+        pCampos.setBackground(new Color(115, 153, 142));
     }//GEN-LAST:event_pCamposMouseMoved
 
     private void pCamposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pCamposMouseClicked
-       jtbReserva.setSelectedIndex(3);
+        jtbReserva.setSelectedIndex(3);
     }//GEN-LAST:event_pCamposMouseClicked
 
     private void pCamposMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pCamposMouseExited
-     pCampos.setBackground(new Color(204,204,204));
+        pCampos.setBackground(new Color(204, 204, 204));
     }//GEN-LAST:event_pCamposMouseExited
 
     private void pDatoEncargadoMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pDatoEncargadoMouseMoved
-        pDatoEncargado.setBackground(new Color(115,153,142));
+        pDatoEncargado.setBackground(new Color(115, 153, 142));
     }//GEN-LAST:event_pDatoEncargadoMouseMoved
 
     private void pDatoEncargadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pDatoEncargadoMouseClicked
         jtbReserva.setSelectedIndex(1);
     }//GEN-LAST:event_pDatoEncargadoMouseClicked
-   
+
     private void pDatoEncargadoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pDatoEncargadoMouseExited
-       pDatoEncargado.setBackground(new Color(204,204,204));
+        pDatoEncargado.setBackground(new Color(204, 204, 204));
     }//GEN-LAST:event_pDatoEncargadoMouseExited
 
     private void pHorariosMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pHorariosMouseMoved
-       pHorarios.setBackground(new Color(115,153,142));
+        pHorarios.setBackground(new Color(115, 153, 142));
     }//GEN-LAST:event_pHorariosMouseMoved
 
     private void pHorariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pHorariosMouseClicked
-       jtbReserva.setSelectedIndex(2);
+        jtbReserva.setSelectedIndex(2);
     }//GEN-LAST:event_pHorariosMouseClicked
 
     private void pHorariosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pHorariosMouseExited
-        pHorarios.setBackground(new Color(204,204,204));
+        pHorarios.setBackground(new Color(204, 204, 204));
     }//GEN-LAST:event_pHorariosMouseExited
 
-    private void pEquipamientosMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pEquipamientosMouseMoved
-        pEquipamientos.setBackground(new Color(115,153,142));
-    }//GEN-LAST:event_pEquipamientosMouseMoved
-
-    private void pEquipamientosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pEquipamientosMouseClicked
-        jtbReserva.setSelectedIndex(4);
-    }//GEN-LAST:event_pEquipamientosMouseClicked
-
-    private void pEquipamientosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pEquipamientosMouseExited
-        pEquipamientos.setBackground(new Color(204,204,204));
-    }//GEN-LAST:event_pEquipamientosMouseExited
-
-    private void jbtnAceptarEMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnAceptarEMouseMoved
-        jbtnAceptarE.setBackground(new Color(115,153,142));
-    }//GEN-LAST:event_jbtnAceptarEMouseMoved
-
-    private void jbtnCancelarEMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnCancelarEMouseMoved
-       jbtnCancelarE.setBackground(new Color(178,68,75)); 
-    }//GEN-LAST:event_jbtnCancelarEMouseMoved
-
-    private void jbtnAceptarEMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnAceptarEMouseExited
-       jbtnAceptarE.setBackground(new Color(204,204,204));
-    }//GEN-LAST:event_jbtnAceptarEMouseExited
-
-    private void jbtnCancelarEMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnCancelarEMouseExited
-       jbtnCancelarE.setBackground(new Color(204,204,204));
-    }//GEN-LAST:event_jbtnCancelarEMouseExited
-
     private void jbtnAceptarCMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnAceptarCMouseMoved
-       jbtnAceptarC.setBackground(new Color(115,153,142));
+        jbtnAceptarC.setBackground(new Color(115, 153, 142));
     }//GEN-LAST:event_jbtnAceptarCMouseMoved
 
     private void jbtnAceptarCMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnAceptarCMouseExited
-      jbtnAceptarC.setBackground(new Color(204,204,204));
+        jbtnAceptarC.setBackground(new Color(204, 204, 204));
     }//GEN-LAST:event_jbtnAceptarCMouseExited
 
     private void jbtnCancelarCMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnCancelarCMouseMoved
-        jbtnCancelarC.setBackground(new Color(178,68,75)); 
+        jbtnCancelarC.setBackground(new Color(178, 68, 75));
     }//GEN-LAST:event_jbtnCancelarCMouseMoved
 
     private void jbtnCancelarCMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnCancelarCMouseExited
-         jbtnCancelarC.setBackground(new Color(204,204,204));
+        jbtnCancelarC.setBackground(new Color(204, 204, 204));
     }//GEN-LAST:event_jbtnCancelarCMouseExited
 
     private void jbtnAceptarHMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnAceptarHMouseMoved
-       jbtnAceptarH.setBackground(new Color(115,153,142));
+        jbtnAceptarH.setBackground(new Color(115, 153, 142));
     }//GEN-LAST:event_jbtnAceptarHMouseMoved
 
     private void jbtnAceptarHMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnAceptarHMouseExited
-       jbtnAceptarH.setBackground(new Color(204,204,204));
+        jbtnAceptarH.setBackground(new Color(204, 204, 204));
     }//GEN-LAST:event_jbtnAceptarHMouseExited
 
     private void jbtnCancelarHMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnCancelarHMouseMoved
-        jbtnCancelarH.setBackground(new Color(178,68,75)); 
+        jbtnCancelarH.setBackground(new Color(178, 68, 75));
     }//GEN-LAST:event_jbtnCancelarHMouseMoved
 
     private void jbtnCancelarHMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnCancelarHMouseExited
-        jbtnCancelarH.setBackground(new Color(204,204,204));
+        jbtnCancelarH.setBackground(new Color(204, 204, 204));
     }//GEN-LAST:event_jbtnCancelarHMouseExited
 
-    private void jbtnAceptarDMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnAceptarDMouseMoved
-       jbtnAceptarD.setBackground(new Color(51,135,204));
-    }//GEN-LAST:event_jbtnAceptarDMouseMoved
+    private void jbtnGuardarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnGuardarMouseMoved
+        jbtnGuardar.setBackground(new Color(51, 135, 204));
+    }//GEN-LAST:event_jbtnGuardarMouseMoved
 
-    private void jbtnAceptarDMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnAceptarDMouseExited
-        jbtnAceptarD.setBackground(new Color(204,204,204));
-    }//GEN-LAST:event_jbtnAceptarDMouseExited
+    private void jbtnGuardarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnGuardarMouseExited
+        jbtnGuardar.setBackground(new Color(204, 204, 204));
+    }//GEN-LAST:event_jbtnGuardarMouseExited
 
     private void jbtnCancelarDMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnCancelarDMouseMoved
-         jbtnCancelarD.setBackground(new Color(178,68,75)); 
+        jbtnCancelarD.setBackground(new Color(178, 68, 75));
     }//GEN-LAST:event_jbtnCancelarDMouseMoved
 
     private void jbtnCancelarDMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnCancelarDMouseExited
-       jbtnCancelarD.setBackground(new Color(204,204,204));
+        jbtnCancelarD.setBackground(new Color(204, 204, 204));
     }//GEN-LAST:event_jbtnCancelarDMouseExited
-
-    private void jButton47ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton47ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton47ActionPerformed
-
-    private void jbtnAgregarLays4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarLays4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtnAgregarLays4ActionPerformed
-
-    private void jButton48ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton48ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton48ActionPerformed
-
-    private void jbtnAgregarLays5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarLays5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtnAgregarLays5ActionPerformed
-
-    private void jButton49ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton49ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton49ActionPerformed
-
-    private void jButton50ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton50ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton50ActionPerformed
-
-    private void jButton51ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton51ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton51ActionPerformed
-
-    private void jButton52ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton52ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton52ActionPerformed
-
-    private void jbtnAgregarLays6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarLays6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtnAgregarLays6ActionPerformed
-
-    private void jbtnAgregarLays7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarLays7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtnAgregarLays7ActionPerformed
-
-    private void jbtnAgregarLays8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarLays8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtnAgregarLays8ActionPerformed
-
-    private void jbtnAgregarLays9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarLays9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtnAgregarLays9ActionPerformed
-
-    private void jbtnAgregarLays10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarLays10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtnAgregarLays10ActionPerformed
-
-    private void jtxtTotalPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtTotalPagarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtxtTotalPagarActionPerformed
 
     private void jbtnCampo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCampo1ActionPerformed
         Campo_1 campo1 = new Campo_1();
@@ -1186,70 +769,60 @@ public class frmSistema extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnCampo1ActionPerformed
 
     private void jbtnCampo6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCampo6ActionPerformed
-          Campo_6 campo6 = new Campo_6();
+        Campo_6 campo6 = new Campo_6();
         campo6.setVisible(true);
     }//GEN-LAST:event_jbtnCampo6ActionPerformed
 
     private void jbtnCampo4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCampo4ActionPerformed
-         Campo_4 campo4 = new Campo_4();
+        Campo_4 campo4 = new Campo_4();
         campo4.setVisible(true);
     }//GEN-LAST:event_jbtnCampo4ActionPerformed
 
     private void jbtnCampo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCampo2ActionPerformed
-         Campo_2 campo2 = new Campo_2();
+        Campo_2 campo2 = new Campo_2();
         campo2.setVisible(true);
     }//GEN-LAST:event_jbtnCampo2ActionPerformed
 
     private void jbtnCampo5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCampo5ActionPerformed
-          Campo_5 campo5 = new Campo_5();
+        Campo_5 campo5 = new Campo_5();
         campo5.setVisible(true);
     }//GEN-LAST:event_jbtnCampo5ActionPerformed
 
     private void jbtnCampo3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCampo3ActionPerformed
-          Campo_3 campo3 = new Campo_3();
+        Campo_3 campo3 = new Campo_3();
         campo3.setVisible(true);
     }//GEN-LAST:event_jbtnCampo3ActionPerformed
 
-    private void jbtnReservarCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnReservarCarritoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtnReservarCarritoActionPerformed
+    private void jbtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnGuardarActionPerformed
+        guardarDatosEncargado();
+    }//GEN-LAST:event_jbtnGuardarActionPerformed
 
     private void guardarDatosEncargado() {
         String nombre = jtxtNombre.getText();
         String celular = jtxtCelular.getText();
         String dni = jtxtDNI.getText();
-        String HoraInicio = jcbxHInicio.getSelectedItem().toString();
-        String HoraFin = jcbxHFin.getSelectedItem().toString();
+
         String TipoDeporte = jcbxTDeporte.getSelectedItem().toString();
-        String NCampo = jcbxNCampo1.getSelectedItem().toString();
+        
 
         try {
             // Establecer la conexión con la base de datos
             Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:3306/LaRedonda", "nombre", "pass");
 
             // Crear la consulta SQL para la inserción de datos
-           String query = "INSERT INTO datosresidentes (Nombre, Celular, DNI, HoraInicio, HoraFin, TipoDeporte, NCampo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO datosresidentes (Nombre, Celular, DNI, HoraInicio, HoraFin, TipoDeporte, NCampo) VALUES (?, ?, ?, ?)";
 
             try (PreparedStatement pst = connection.prepareStatement(query)) {
                 // Establecer los parámetros de la consulta
-                
+
                 pst.setString(1, nombre);
                 pst.setString(2, celular);
                 pst.setString(3, dni);
-                pst.setString(4, HoraInicio);
-                pst.setString(5, HoraFin);
-                pst.setString(6, TipoDeporte);
-                pst.setString(7, NCampo);
-               
+                pst.setString(4, TipoDeporte);
+                
 
                 // Ejecutar la consulta
                 pst.executeUpdate();
-              
-            // Actualizar la tabla en DatosResidentes
-           // actualizarTablaEnDatosResidentes();
-            
-                // Actualizar la tabla
-               //actualizarTabla();
 
                 // Cerrar la conexión
                 connection.close();
@@ -1258,10 +831,9 @@ public class frmSistema extends javax.swing.JFrame {
                 jtxtNombre.setText("");
                 jtxtCelular.setText("");
                 jtxtDNI.setText("");
-                jcbxHInicio.setSelectedIndex(0);
-                jcbxHFin.setSelectedIndex(0);
+
                 jcbxTDeporte.setSelectedIndex(0);
-                jcbxNCampo1.setSelectedIndex(0);
+                
 
                 JOptionPane.showMessageDialog(null, "Registro exitoso");
             }
@@ -1271,8 +843,8 @@ public class frmSistema extends javax.swing.JFrame {
     }
 
     public static void main(String args[]) {
-         FlatLightLaf.setup();
-        UIManager.put("Button.arc", 50);         
+        FlatLightLaf.setup();
+        UIManager.put("Button.arc", 50);
         UIManager.put("TextComponent.arc", 50);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -1282,20 +854,6 @@ public class frmSistema extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton47;
-    private javax.swing.JButton jButton48;
-    private javax.swing.JButton jButton49;
-    private javax.swing.JButton jButton50;
-    private javax.swing.JButton jButton51;
-    private javax.swing.JButton jButton52;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox6;
     private javax.swing.JComboBox<String> jComboBox7;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
@@ -1314,33 +872,16 @@ public class frmSistema extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel35;
-    private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel37;
-    private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
-    private javax.swing.JLabel jLabel43;
-    private javax.swing.JLabel jLabel44;
-    private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
-    private javax.swing.JLabel jLabel47;
-    private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
@@ -1363,22 +904,12 @@ public class frmSistema extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JButton jbtnAceptarC;
-    private javax.swing.JButton jbtnAceptarD;
-    private javax.swing.JButton jbtnAceptarE;
     private javax.swing.JButton jbtnAceptarH;
-    private javax.swing.JButton jbtnAgregarLays10;
-    private javax.swing.JButton jbtnAgregarLays4;
-    private javax.swing.JButton jbtnAgregarLays5;
-    private javax.swing.JButton jbtnAgregarLays6;
-    private javax.swing.JButton jbtnAgregarLays7;
-    private javax.swing.JButton jbtnAgregarLays8;
-    private javax.swing.JButton jbtnAgregarLays9;
     private javax.swing.JButton jbtnCampo1;
     private javax.swing.JButton jbtnCampo2;
     private javax.swing.JButton jbtnCampo3;
@@ -1387,17 +918,13 @@ public class frmSistema extends javax.swing.JFrame {
     private javax.swing.JButton jbtnCampo6;
     private javax.swing.JButton jbtnCancelarC;
     private javax.swing.JButton jbtnCancelarD;
-    private javax.swing.JButton jbtnCancelarE;
     private javax.swing.JButton jbtnCancelarH;
     private javax.swing.JButton jbtnEventos;
+    private javax.swing.JButton jbtnGuardar;
     private javax.swing.JButton jbtnPagos;
     private javax.swing.JButton jbtnQuejas;
     private javax.swing.JButton jbtnReservar;
-    private javax.swing.JButton jbtnReservarCarrito;
     private javax.swing.JButton jbtnSalir;
-    private javax.swing.JComboBox<String> jcbxHFin;
-    private javax.swing.JComboBox<String> jcbxHInicio;
-    private javax.swing.JComboBox<String> jcbxNCampo1;
     private javax.swing.JComboBox<String> jcbxTDeporte;
     private javax.swing.JPanel jpEventos;
     private javax.swing.JPanel jpPagos;
@@ -1405,17 +932,13 @@ public class frmSistema extends javax.swing.JFrame {
     private javax.swing.JPanel jpReserva;
     private javax.swing.JTabbedPane jtbPaneles;
     private javax.swing.JTabbedPane jtbReserva;
-    private javax.swing.JTable jtblCarrito;
     private javax.swing.JTextField jtxtCelular;
     private javax.swing.JTextField jtxtDNI;
     private javax.swing.JTextField jtxtNombre;
-    private javax.swing.JTextField jtxtTotalPagar;
     private javax.swing.JPanel pCampos;
     private javax.swing.JPanel pCancha;
     private javax.swing.JPanel pDatoEncargado;
     private javax.swing.JPanel pDatos;
-    private javax.swing.JPanel pEquipamiento;
-    private javax.swing.JPanel pEquipamientos;
     private javax.swing.JPanel pHome;
     private javax.swing.JPanel pHorario;
     private javax.swing.JPanel pHorarios;

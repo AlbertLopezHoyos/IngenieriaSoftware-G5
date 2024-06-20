@@ -2,54 +2,115 @@ package Vista;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import javax.swing.Icon;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class Campo_1 extends javax.swing.JFrame {
 
+    
+    
     public Campo_1() {
         initComponents();
+
+        ItemListener itemListener = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    if (!jcbxHInicioC1.getSelectedItem().toString().equals("--Seleccionar--") &&
+                        !jcbxHFinC1.getSelectedItem().toString().equals("--Seleccionar--")) {
+                        calcularCostoTiempo();
+                    } else {
+                        jtxtCostoTiempo.setText(""); // Limpiar el campo si falta alguna selección
+                    }
+                }
+            }
+        };
+        jcbxHInicioC1.addItemListener(itemListener);
+        jcbxHFinC1.addItemListener(itemListener);
+        
+        DocumentListener documentListener = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                calcularPagoTotal();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                calcularPagoTotal();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                calcularPagoTotal();
+            }
+        };
+
+        jtxtCostoTiempo.getDocument().addDocumentListener(documentListener);
+        jtxtMontoEquipo.getDocument().addDocumentListener(documentListener);
     }
 
+    public void setMontoEquipo(String monto) {
+        jtxtMontoEquipo.setText(monto);
+    }
+
+    private void calcularPagoTotal() {
+        try {
+            double costoTiempo = Double.parseDouble(jtxtCostoTiempo.getText().replace("S/. ", "").isEmpty() ? "0" : jtxtCostoTiempo.getText().replace("S/. ", ""));
+            double montoEquipos = Double.parseDouble(jtxtMontoEquipo.getText().replace("S/. ", "").isEmpty() ? "0" : jtxtMontoEquipo.getText().replace("S/. ", ""));
+
+            double pagoTotal = costoTiempo + montoEquipos;
+            jtxtPagoTotal.setText("S/. " + String.format("%.2f", pagoTotal));
+        } catch (NumberFormatException e) {
+            jtxtPagoTotal.setText("S/. 0.00");
+        }
+    }
+   
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
+        jLabel50 = new javax.swing.JLabel();
+        jcbxHFinC1 = new javax.swing.JComboBox<>();
+        jcbxHInicioC1 = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jtxtHFinC = new javax.swing.JTextField();
-        jtxtHInicioC = new javax.swing.JTextField();
         jbtnMarco = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jcbxChalecos = new javax.swing.JComboBox<>();
-        jLabel6 = new javax.swing.JLabel();
         jbtnIr = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        jtxtMontoEquipo = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jTextField3 = new javax.swing.JTextField();
+        jtxtCostoTiempo = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        jtxtPagoTotal = new javax.swing.JTextField();
         jbtnGuardarCampo1 = new javax.swing.JButton();
         jbtnVolverCampo1 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(60, 71, 84));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/pitch.png"))); // NOI18N
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 70, 70));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Light", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -65,23 +126,18 @@ public class Campo_1 extends javax.swing.JFrame {
         jLabel3.setText("Hora Fin:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, 60, 40));
 
+        jLabel50.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/detalles (1).jpg"))); // NOI18N
+        jPanel1.add(jLabel50, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 390, 240));
+
+        jcbxHFinC1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Seleccionar--", "7:00", "7:30", "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00" }));
+        jPanel1.add(jcbxHFinC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 90, 120, -1));
+
+        jcbxHInicioC1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Seleccionar--", "7:00", "7:30", "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00" }));
+        jPanel1.add(jcbxHInicioC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 120, -1));
+
         jLabel4.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         jLabel4.setText("Hora Inicio:");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, 70, 40));
-
-        jtxtHFinC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtxtHFinCActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jtxtHFinC, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 90, 110, 30));
-
-        jtxtHInicioC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtxtHInicioCActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jtxtHInicioC, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 110, 30));
 
         jbtnMarco.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
@@ -100,16 +156,8 @@ public class Campo_1 extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel5.setText("Otros:");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 70, 30));
-
-        jcbxChalecos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<<seleccione>>", "5", "6", "7", "8", "9", "10", "11", "12" }));
-        jPanel2.add(jcbxChalecos, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 130, -1));
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel6.setText("Chalecos:");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 70, 30));
+        jLabel5.setText("los aquipamientos");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 120, 30));
 
         jbtnIr.setText("Ir");
         jbtnIr.addActionListener(new java.awt.event.ActionListener() {
@@ -117,26 +165,37 @@ public class Campo_1 extends javax.swing.JFrame {
                 jbtnIrActionPerformed(evt);
             }
         });
-        jPanel2.add(jbtnIr, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 130, -1));
+        jPanel2.add(jbtnIr, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 70, -1));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel7.setText("Monto de equipos agregados:");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 190, 30));
-        jPanel2.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 90, 220, -1));
+        jLabel7.setText("agregados:");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, 70, 30));
+
+        jtxtMontoEquipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtxtMontoEquipoActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jtxtMontoEquipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, 110, -1));
 
         jLabel10.setText("S/.");
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 90, 20, 20));
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 20, 20));
 
-        jButton2.setBackground(new java.awt.Color(60, 71, 84));
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("SUMAR");
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, 210, -1));
+        jLabel12.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel12.setText("Monto de equipos ");
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 30, 120, 30));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 620, 180));
+        jLabel13.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel13.setText("Ir a visualizar ");
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, 90, 30));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 170, 300, 160));
 
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel3.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 150, -1));
+        jPanel3.add(jtxtCostoTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 150, -1));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
@@ -153,14 +212,19 @@ public class Campo_1 extends javax.swing.JFrame {
 
         jLabel11.setText("S/.");
         jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, 20, 20));
-        jPanel4.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 230, -1));
+        jPanel4.add(jtxtPagoTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 230, -1));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, 340, 70));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 380, 340, 70));
 
         jbtnGuardarCampo1.setBackground(new java.awt.Color(32, 112, 61));
         jbtnGuardarCampo1.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         jbtnGuardarCampo1.setForeground(new java.awt.Color(255, 255, 255));
         jbtnGuardarCampo1.setText("Guardar");
+        jbtnGuardarCampo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnGuardarCampo1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jbtnGuardarCampo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 390, 120, 40));
 
         jbtnVolverCampo1.setBackground(new java.awt.Color(18, 133, 190));
@@ -174,6 +238,9 @@ public class Campo_1 extends javax.swing.JFrame {
         });
         jPanel1.add(jbtnVolverCampo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 120, 40));
 
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/pitch.png"))); // NOI18N
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 70, 70));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 460));
 
         pack();
@@ -181,29 +248,76 @@ public class Campo_1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnMarcoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnMarcoActionPerformed
-        // TODO add your handling code here:
+        //frmSistema equipo = new frmSistema();
+        //equipo.setVisible(true);
     }//GEN-LAST:event_jbtnMarcoActionPerformed
 
     private void jbtnMarcoMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnMarcoMouseMoved
          jbtnMarco.setBackground(new Color(204,204,204));
     }//GEN-LAST:event_jbtnMarcoMouseMoved
 
-    private void jtxtHFinCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtHFinCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtxtHFinCActionPerformed
-
     private void jbtnIrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnIrActionPerformed
-        frmEquipamiento equipo = new frmEquipamiento();
-        equipo.setVisible(true);
+       Campo_2 campo2 = new Campo_2(); // Inicializa si es necesario
+        Campo_3 campo3 = new Campo_3(); // Inicializa si es necesario
+        Campo_4 campo4 = new Campo_4(); // Inicializa si es necesario
+        Campo_5 campo5 = new Campo_5(); // Inicializa si es necesario
+        Campo_6 campo6 = new Campo_6(); // Inicializa si es necesario
+        
+        frmEquipamiento equipamiento = new frmEquipamiento(this, campo2, campo3, campo4, campo5, campo6);
+        equipamiento.setVisible(true);
     }//GEN-LAST:event_jbtnIrActionPerformed
 
     private void jbtnVolverCampo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnVolverCampo1ActionPerformed
      dispose();
     }//GEN-LAST:event_jbtnVolverCampo1ActionPerformed
 
-    private void jtxtHInicioCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtHInicioCActionPerformed
+    private void jbtnGuardarCampo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnGuardarCampo1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jtxtHInicioCActionPerformed
+    }//GEN-LAST:event_jbtnGuardarCampo1ActionPerformed
+
+    private void jtxtMontoEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtMontoEquipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtxtMontoEquipoActionPerformed
+
+    private void calcularCostoTiempo() {
+        String horaInicio = jcbxHInicioC1.getSelectedItem().toString();
+        String horaFin = jcbxHFinC1.getSelectedItem().toString();
+
+        // Validar que se hayan seleccionado ambas horas
+        if (horaInicio.equals("--Seleccionar--") || horaFin.equals("--Seleccionar--")) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona ambas horas.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Calcular el costo y mostrar el resultado
+        double costoTiempo = calcularCostoTiempo(horaInicio, horaFin);
+        jtxtCostoTiempo.setText("S/. " + String.format("%.2f", costoTiempo));
+    }
+
+  private double calcularCostoTiempo(String horaInicio, String horaFin) {
+        int horaInicioNum = Integer.parseInt(horaInicio.split(":")[0]);
+        int minInicioNum = Integer.parseInt(horaInicio.split(":")[1]);
+        int horaFinNum = Integer.parseInt(horaFin.split(":")[0]);
+        int minFinNum = Integer.parseInt(horaFin.split(":")[1]);
+
+        int minutosTotales = (horaFinNum * 60 + minFinNum) - (horaInicioNum * 60 + minInicioNum);
+
+        double costoTotal = 0.0;
+        while (minutosTotales > 0) {
+            if (minutosTotales >= 60) {
+                costoTotal += 60.0;
+                minutosTotales -= 60;
+            } else {
+                costoTotal += 30.0;
+                minutosTotales -= 30;
+            }
+        }
+
+        return costoTotal;
+    }
+
+    
+   
 
     public static void main(String args[]) {
 
@@ -219,14 +333,15 @@ public class Campo_1 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -236,16 +351,15 @@ public class Campo_1 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JButton jbtnGuardarCampo1;
     private javax.swing.JButton jbtnIr;
     private javax.swing.JButton jbtnMarco;
     private javax.swing.JButton jbtnVolverCampo1;
-    private javax.swing.JComboBox<String> jcbxChalecos;
-    private javax.swing.JTextField jtxtHFinC;
-    private javax.swing.JTextField jtxtHInicioC;
+    private javax.swing.JComboBox<String> jcbxHFinC1;
+    private javax.swing.JComboBox<String> jcbxHInicioC1;
+    private javax.swing.JTextField jtxtCostoTiempo;
+    private javax.swing.JTextField jtxtMontoEquipo;
+    private javax.swing.JTextField jtxtPagoTotal;
     // End of variables declaration//GEN-END:variables
 
     private void System(int i) {
